@@ -12,7 +12,7 @@
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
-    const ALLOWED_ORIGIN = env.LOCAL_URL || 'https://webchargedsolutions.com';
+    const ALLOWED_ORIGIN = env.LOCAL_URL || env.PRODUCTION_URL || 'https://webchargedsolutions.com';
 
     // Handle CORS preflight for all routes
     if (request.method === 'OPTIONS') {
@@ -86,6 +86,10 @@ async function handleContactForm(request, env, ALLOWED_ORIGIN) {
   if (!emailRegex.test(email)) {
     return jsonResponse({ error: 'Invalid email address.' }, 400, ALLOWED_ORIGIN);
   }
+  const phoneRegex = /^(\+[1-9][0-9]{0,2}[-\s\.]?)?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4}$/;
+  if (contact_method === 'phone' && !phoneRegex.test(phone)) {
+    return jsonResponse({ error: 'Invalid phone number.' }, 400, ALLOWED_ORIGIN);
+  }
 
   const contact_reason_options = {
     newwebsite: "A new website",
@@ -153,6 +157,10 @@ async function handleGetSupportForm(request, env, ALLOWED_ORIGIN) {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (!emailRegex.test(email)) {
     return jsonResponse({ error: 'Invalid email address.' }, 400, ALLOWED_ORIGIN);
+  }
+  const phoneRegex = /^(\+[1-9][0-9]{0,2}[-\s\.]?)?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4}$/;
+  if (contact_method === 'phone' && !phoneRegex.test(phone)) {
+    return jsonResponse({ error: 'Invalid phone number.' }, 400, ALLOWED_ORIGIN);
   }
 
   return sendBrevoEmail({
