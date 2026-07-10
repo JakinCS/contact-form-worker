@@ -15,7 +15,7 @@
 		"nodejs_compat"
 	],
 	"vars": {
-		"PRODUCTION_URL": "https://static.webchargedsolutions.com"
+		"PRODUCTION_URL": "https://webchargedsolutions.com"
 	}
 	/**
 	 * Smart Placement
