@@ -51,8 +51,7 @@ async function handleContactForm(request, env, ALLOWED_ORIGIN) {
     return jsonResponse({ error: 'Invalid JSON' }, 400, ALLOWED_ORIGIN);
   }
 
-  const { name, email, contact_method, phone, contact_reason, message, policy_agreement, company_name } = body;
-  // const { name, email, contact_method, phone, contact_reason, message, policy_agreement, sms_agreement, company_name } = body;
+  const { name, email, contact_method, phone, contact_reason, message, policy_agreement, sms_agreement, company_name } = body;
 
   // This field is the honeypot spam check
   if (company_name) {
@@ -113,14 +112,13 @@ async function handleContactForm(request, env, ALLOWED_ORIGIN) {
       <p><strong>Phone:</strong> ${sanitize(phone || 'Not provided')}</p>
       <p><strong>Reason for Contact:</strong> ${sanitize(contact_reason_options[contact_reason] || 'Not specified')}</p>
       <p><strong>Policies Agreement:</strong> ${policy_agreement == true ? 'Yes' : 'No'}</p>
+      <p><strong>SMS Agreement:</strong> ${sms_agreement == true ? 'Yes' : 'No'}</p>
       <p><strong>Message:</strong></p>
       <p>${sanitize(message).replace(/\n/g, '<br>')}</p>
     `,
     ALLOWED_ORIGIN,
   });
 }
-
-// <p><strong>SMS Agreement:</strong> ${sms_agreement == true ? 'Yes' : 'No'}</p>
 
 async function handleGetSupportForm(request, env, ALLOWED_ORIGIN) {
   let body;
@@ -130,7 +128,7 @@ async function handleGetSupportForm(request, env, ALLOWED_ORIGIN) {
     return jsonResponse({ error: 'Invalid JSON' }, 400, ALLOWED_ORIGIN);
   }
 
-  const { name, email, contact_method, phone, message, policy_agreement, company_name } = body;
+  const { name, email, contact_method, phone, message, policy_agreement, sms_agreement, company_name } = body;
 
   // This field is the honeypot spam check
   if (company_name) {
@@ -178,6 +176,8 @@ async function handleGetSupportForm(request, env, ALLOWED_ORIGIN) {
       <p><strong>Email:</strong> ${sanitize(email)}</p>
       <p><strong>Preferred Contact Method:</strong> ${sanitize(contact_method || 'Not specified')}</p>
       <p><strong>Phone:</strong> ${sanitize(phone || 'Not provided')}</p>
+      <p><strong>Policies Agreement:</strong> ${policy_agreement == true ? 'Yes' : 'No'}</p>
+      <p><strong>SMS Agreement:</strong> ${sms_agreement == true ? 'Yes' : 'No'}</p>
       <p><strong>Message:</strong></p>
       <p>${sanitize(message || 'No message').replace(/\n/g, '<br>')}</p>
     `,
